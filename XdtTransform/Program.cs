@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Web.XmlTransform;
+using System;
+using System.IO;
+using System.Xml;
 
 namespace XdtTransform
 {
@@ -10,6 +9,19 @@ namespace XdtTransform
     {
         static void Main(string[] args)
         {
+            if (args.Length != 2)
+            {
+                Console.WriteLine("XdtTransform <xmlfile> <xdttransform>");
+                return;
+            }
+
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(args[0]);
+
+            var transform = new XmlTransformation(args[1]);
+            transform.Apply(xmlDoc);
+
+            xmlDoc.Save(Path.ChangeExtension(args[0], "new.xml"));
         }
     }
 }
